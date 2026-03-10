@@ -1,5 +1,10 @@
 vim.g.mapleader = " "
 
+-- Session Management (Persistence)
+vim.keymap.set("n", "<leader>qs", function() require("persistence").load() end, { desc = "Restore Session" })
+vim.keymap.set("n", "<leader>ql", function() require("persistence").load({ last = true }) end, { desc = "Restore Last Session" })
+vim.keymap.set("n", "<leader>qd", function() require("persistence").stop() end, { desc = "Don't Save Session" })
+
 local keymap = vim.keymap
 
 -- Save
@@ -16,14 +21,55 @@ keymap.set("n", "<C-a>", "ggVG")
 keymap.set("v", "<", "<gv")
 keymap.set("v", ">", ">gv")
 
+-- UFO Folding
+keymap.set("n", "zR", function() require("ufo").openAllFolds() end, { desc = "Open all folds" })
+keymap.set("n", "zM", function() require("ufo").closeAllFolds() end, { desc = "Close all folds" })
+keymap.set("n", "zr", function() require("ufo").openFoldsExceptKinds() end, { desc = "Open folds except kinds" })
+keymap.set("n", "zm", function() require("ufo").closeFoldsWith() end, { desc = "Close folds with" })
+keymap.set("n", "K", function()
+  local winid = require("ufo").peekFoldedLinesUnderCursor()
+  if not winid then
+    vim.lsp.buf.hover()
+  end
+end, { desc = "Peek Fold / Hover" })
+
 -- Window navigation (VSCode-like feel)
 keymap.set("n", "<C-h>", "<C-w>h")
 keymap.set("n", "<C-l>", "<C-w>l")
 keymap.set("n", "<C-j>", "<C-w>j")
 keymap.set("n", "<C-k>", "<C-w>k")
 
+-- Window splits (VSCode-style: focus new split)
+keymap.set("n", "<C-\\>", function()
+  vim.cmd("vsplit")
+  vim.cmd("wincmd l")
+end, { silent = true, desc = "Vertical Split" })
+
+keymap.set("n", "<C-->", function()
+  vim.cmd("split")
+  vim.cmd("wincmd j")
+end, { silent = true, desc = "Horizontal Split" })
+
 -- VSCode-like Explorer Toggle
-keymap.set("n", "<C-b>", "<cmd>NvimTreeToggle<CR>", { silent = true, desc = "Toggle Explorer" })
+keymap.set({ "n", "i", "v" }, "<C-b>", "<cmd>NvimTreeToggle<CR>", { silent = true, desc = "Toggle Explorer" })
+
+-- Code Outline (Aerial)
+keymap.set("n", "<leader>o", "<cmd>AerialToggle! right<CR>", { silent = true, desc = "Toggle Outline" })
+
+-- Premium Git Management (VSCode-like UI)
+keymap.set("n", "<leader>gg", "<cmd>Neogit<CR>", { silent = true, desc = "Neogit Status" })
+keymap.set("n", "<leader>gd", "<cmd>DiffviewOpen<CR>", { silent = true, desc = "Global Diff" })
+keymap.set("n", "<leader>gf", "<cmd>DiffviewFileHistory %<CR>", { silent = true, desc = "File History" })
+keymap.set("n", "<leader>gx", "<cmd>DiffviewClose<CR>", { silent = true, desc = "Close Diff" })
+
+-- Git Worktree Management
+keymap.set("n", "<leader>gw", function()
+  require("telescope").extensions.git_worktree.git_worktrees()
+end, { silent = true, desc = "Switch Worktree" })
+
+keymap.set("n", "<leader>gn", function()
+  require("telescope").extensions.git_worktree.create_git_worktree()
+end, { silent = true, desc = "New Worktree" })
 
 
 -- VSCode-like Search (Current File)
@@ -123,6 +169,27 @@ keymap.set("n", "<A-Space>", function()
     previewer = false,
   })
 end, { silent = true, desc = "Quick Open File" })
+
+-- Undotree
+keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle, { desc = "Toggle Undotree" })
+
+-- Oil (File Manager)
+keymap.set("n", "-", "<cmd>Oil<CR>", { desc = "Open parent directory" })
+
+-- Quickfix List Toggle
+keymap.set("n", "<leader>xl", function()
+  local qf_exists = false
+  for _, win in pairs(vim.fn.getwininfo()) do
+    if win["quickfix"] == 1 then
+      qf_exists = true
+    end
+  end
+  if qf_exists then
+    vim.cmd("cclose")
+  else
+    vim.cmd("copen")
+  end
+end, { desc = "Toggle Quickfix List" })
 
 -- Real Peek Definition (VSCode-style floating window with navigation)
 keymap.set("n", "<A-F12>", function()

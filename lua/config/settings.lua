@@ -10,6 +10,8 @@ opt.smartindent = true
 
 opt.wrap = false
 opt.cursorline = true
+opt.scrolloff = 8
+opt.sidescrolloff = 8
 
 opt.ignorecase = true
 opt.smartcase = true
@@ -21,6 +23,12 @@ opt.splitright = true
 opt.splitbelow = true
 
 opt.clipboard = "unnamedplus"
+
+-- Code Folding (UFO)
+opt.foldcolumn = "1"
+opt.foldlevel = 99
+opt.foldlevelstart = 99
+opt.foldenable = true
 -- Smooth LSP hover & bordered windows (VSCode style)
 vim.o.updatetime = 250
 
@@ -36,37 +44,6 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
   { border = border }
 )
 
--- Hover ONLY on mouse hover (not keyboard cursor move)
-local hover_timer = nil
 
-vim.api.nvim_create_autocmd("CursorMoved", {
-  callback = function()
-    local mouse = vim.fn.getmousepos()
-    if mouse.winid ~= vim.api.nvim_get_current_win() then
-      return
-    end
 
-    local mouse_line = mouse.line
-    local cursor_line = vim.fn.line(".")
 
-    -- Trigger hover only if cursor moved via mouse
-    if mouse_line == cursor_line then
-      if hover_timer then
-        vim.fn.timer_stop(hover_timer)
-      end
-
-      hover_timer = vim.fn.timer_start(120, function()
-        vim.schedule(function()
-          vim.lsp.buf.hover()
-        end)
-      end)
-    end
-  end,
-})
-
--- Signature help while typing
-vim.api.nvim_create_autocmd("InsertCharPre", {
-  callback = function()
-    vim.lsp.buf.signature_help()
-  end,
-})

@@ -1,294 +1,87 @@
 # Neovim Setup Overview
 
-This configuration is designed to give Neovim a VSCode-like experience while keeping the speed, flexibility, and composability of native Neovim.
-
-The setup focuses on:
-- Modern UI with statusline, tabs, icons, and file explorer
-- Full LSP support with hover, signature help, inlay hints
-- Fast fuzzy finding and workspace search
-- Integrated formatting and linting
-- Practical keybindings that mirror common VSCode shortcuts
+This configuration is designed to give Neovim a premium, production-grade experience with a "Charcoal" dark aesthetic and modular architecture. It bridges the gap between the intuitiveness of modern IDEs and the raw power of Neovim.
 
 ---
 
-## Core Structure
+## 🏗️ Core Architecture (Clean Code)
 
-Entry point:
-- `init.lua` – Loads settings, keymaps, plugin manager, and learning module.
+The setup follows a modular design for maintainability and speed.
 
-Config modules:
-- `lua/config/settings.lua` – Editor options and LSP UI behavior.
-- `lua/config/keymaps.lua` – All custom keybindings.
-- `lua/config/lazy.lua` – Plugin manager and plugin configuration.
-- `lua/config/learn.lua` – Custom learning session logic.
-
----
-
-## Plugin Manager
-
-### lazy.nvim
-Used for plugin management.
-
-Why:
-- Fast startup with lazy loading
-- Clean plugin specification
-- Easy updates and dependency handling
+### Structure
+- `init.lua` – System entry point.
+- `lua/config/` – Core editor logic:
+  - `settings.lua` – Vim options and UI behaviors.
+  - `keymaps.lua` – All custom shortcuts.
+  - `lazy.lua` – Plugin manager orchestrator.
+  - `autocmds.lua` – Centralized automated behaviors.
+- `lua/plugins/` – Modular plugin specifications (Auto-imported):
+  - `ui.lua` – Theme, statusline, tabs, and dashboard.
+  - `lsp.lua` – Intelligence, autocompletion, and formatting.
+  - `editor.lua` – Navigation, explorer, terminal, and search.
+  - `git.lua` – Worktrees, diffs, and staging.
+  - `coding.lua` – Treesitter, folding (UFO), and syntax logic.
 
 ---
 
-## UI and Visual Layer
+## 🎨 Aesthetic & UI (Premium Charcoal)
 
-### vscode.nvim (Colorscheme)
-Why:
-- Familiar VSCode look
-- Clean contrast
-- Works well with LSP diagnostics
+### Catppuccin Mocha (Custom Charcoal)
+- Fixed background to `#151616` across all views (Explorer, Diffs, Code).
+- High-contrast, soft syntax highlighting with italics for modern feel.
 
-### lualine.nvim
-Statusline at the bottom.
-
-Why:
-- Lightweight
-- Clear mode, branch, diagnostics
-- Themed to match VSCode
-
-### bufferline.nvim
-Tabs across the top (VSCode-style).
-
-Why:
-- Visual buffer switching
-- LSP diagnostics per buffer
-- Integrated with file explorer
-
-### nvim-tree
-File explorer on the left.
-
-Why:
-- Fast file navigation
-- Git integration
-- Opens automatically on startup
-
-### gitsigns.nvim
-Git change indicators in the sign column.
-
-Why:
-- See added/modified/deleted lines instantly
+### Luxury Visuals
+- **mini.animate**: Smooth, high-end motion for scrolling, resizing, and opening windows.
+- **lualine.nvim**: Sleek statusline with breadcrumbs (`navic`) showing your code location.
+- **bufferline.nvim**: Premium horizontal tabs with diagnostics and close-on-hover logic.
+- **alpha-nvim**: Professional ASCII dashboard on startup.
 
 ---
 
-## Search and Navigation
+## 🧠 Intelligence & Engineering
 
-### telescope.nvim
-Fuzzy finder and search engine.
+### LSP & Completion
+- **LSP Config**: Pre-configured for Lua, Go, JS/TS, Python, and Tailwind.
+- **Autocompletion**: `nvim-cmp` with modern icons and bordered windows.
+- **none-ls**: Auto-formatting on save using Prettier, Black, and Stylua.
 
-Used for:
-- File search
-- Live grep across project
-- Command palette
-- In-buffer fuzzy search
-
-Why:
-- Extremely fast
-- Flexible layouts
-- VSCode-like workflows
+### Enhanced Navigation
+- **Aerial**: Visual code outline (`<leader>o`) to see functions/classes at a glance.
+- **UFO**: VSCode-grade code folding with "Peek" support (press `K` on a fold).
+- **markview.nvim**: Real-time "Obsidian-style" rendering for Markdown files.
+- **Spectre**: Global search and replace UI with live previews.
 
 ---
 
-## Syntax and Parsing
+## 🐙 Git Power-User Workflow
 
-### nvim-treesitter
-Advanced syntax highlighting and indentation.
-
-Languages installed:
-- Lua
-- JavaScript
-- TypeScript
-- Python
-- HTML
-- CSS
-- JSON
-- Bash
-
-Why:
-- Accurate highlighting
-- Better indentation
-- Incremental selection support
-
-Incremental selection keymaps:
-- `gnn` – Start selection
-- `grn` – Expand node
-- `grc` – Expand scope
-- `grm` – Shrink selection
+- **Neogit**: Full-scale Git dashboard (`<leader>gg`).
+- **Diffview**: Side-by-side global diffs and permanent file history timelines.
+- **Worktree**: Manage multiple branch checkouts simultaneously via Telescope (`<leader>gw`).
+- **Gitsigns**: Inline hunk indicators and change tracking.
 
 ---
 
-## LSP (Language Server Protocol)
+## ⌨️ Essential Keybindings
 
-### nvim-lspconfig
-Configures language servers.
-
-Enabled servers:
-- lua_ls
-- gopls
-- tsserver
-- tailwindcss
-- pyright
-
-Features enabled:
-- Hover with rounded borders
-- Signature help while typing
-- Inlay hints (if supported)
-- Ctrl+Click go to definition
-- Peek definition in floating window
-
-### mason.nvim + mason-lspconfig
-Manages installation of LSP servers.
-
-Why:
-- Automatic installation
-- Consistent dev environment
-
-### none-ls.nvim (null-ls)
-Formatting and diagnostics bridge.
-
-Formatters:
-- prettier
-- gofmt
-- black
-
-Diagnostics / Code actions:
-- eslint
-
-Why:
-- Keeps formatting unified through LSP
+| Category | Mapping | Action |
+| :--- | :--- | :--- |
+| **Explorer** | `Ctrl + b` | Toggle File Explorer |
+| **Focus** | `-` | Open Oil (Edit filesystem as text) |
+| **Outline** | `<leader>o` | Toggle Code Outline |
+| **Search** | `Ctrl + Shift + f` | Global Search (Project) |
+| **Command** | `Ctrl + Shift + p` | Command Palette |
+| **Folds** | `zR` / `zM` | Open / Close All Folds |
+| **Folds** | `K` | Peek into a folded block |
+| **Git** | `<leader>gg` | Open Neogit Dashboard |
+| **Git** | `<leader>gw` | Manage Git Worktrees |
+| **Time** | `<leader>u` | UndoTree (Visual time-machine) |
+| **Session** | `<leader>qs` | Restore Last Session |
 
 ---
 
-## Autocompletion
-
-### nvim-cmp
-Completion engine.
-
-Sources:
-- LSP
-- LuaSnip
-- Buffer
-- Path
-
-Why:
-- Fast
-- Minimal UI
-- Keyboard-driven workflow
-
-Completion keys:
-- `Enter` – Confirm selection
-- `Tab` – Next item
-- `Shift+Tab` – Previous item
-- `Ctrl+k` – Show docs (when menu open)
-
----
-
-## Terminal Integration
-
-### toggleterm.nvim
-Integrated terminal inside Neovim.
-
-Why:
-- Run builds/tests without leaving editor
-- Horizontal split like VSCode terminal
-
----
-
-## Multi-Cursor
-
-### vim-visual-multi
-VSCode-like multi-cursor editing.
-
-Keybindings:
-- `Ctrl+d` – Select next occurrence
-- `Ctrl+Up/Down` – Add cursor above/below
-
----
-
-## Editor Settings
-
-Key defaults:
-- Relative line numbers
-- 4-space indentation
-- expandtab enabled
-- Smart case search
-- System clipboard enabled
-- Split right and below
-- Signcolumn always visible
-- Cursorline enabled
-- No line wrap
-
-LSP behavior:
-- Hover only triggers on mouse hover
-- Signature help while typing
-- Rounded floating window borders
-
----
-
-## Keybindings
-
-Leader key:
-- `Space`
-
-File Operations:
-- `Ctrl+s` – Save
-- `Ctrl+q` – Quit
-- `Ctrl+w` – Close current tab
-- `Ctrl+a` – Select all
-
-Explorer:
-- `Ctrl+b` – Toggle file explorer
-
-Search:
-- `Ctrl+f` – Search in current file
-- `Ctrl+Shift+f` – Search in workspace
-- `Alt+Space` – Quick file open
-- `Ctrl+Shift+p` – Command palette
-
-Buffer Navigation:
-- `Shift+l` – Next tab
-- `Shift+h` – Previous tab
-- `Alt+Left/Right` – Navigate tabs
-
-Terminal:
-- `Ctrl+j` – Toggle terminal
-
-Code Navigation:
-- `Ctrl+Click` – Go to definition
-- `Alt+F12` – Peek definition
-
-Editing:
-- `Ctrl+Shift+Up/Down` – Duplicate line
-- `Alt+Up/Down` – Move line
-- `<` / `>` in visual mode – Stay-indented shifting
-
-Learning Mode:
-- `<leader>ls` – Start session
-- `<leader>le` – End session
-
----
-
-## Startup Behavior
-
-On launch:
-- File explorer opens automatically
-- Colorscheme loads
-- LSP ready if server available
-
----
-
-## Philosophy
-
-This setup aims to:
-- Feel familiar to VSCode users
-- Preserve Vim modal power
-- Keep performance high
-- Minimize unnecessary UI noise
-- Stay keyboard-centric
-
-It balances modern IDE features with Neovim's minimal core.
+## 🛠️ Automated Behaviors (`autocmds`)
+- **Auto-Explorer**: File tree opens automatically on launch.
+- **Yank Highlight**: Flashes the text you just copied for visual feedback.
+- **Auto-Resize**: Splits automatically re-balance when you resize your terminal window.
+- **Format on Save**: Clean code is enforced every time you save.
