@@ -24,8 +24,12 @@ opt.splitbelow = true
 
 opt.clipboard = "unnamedplus"
 
+-- Allow arrow keys to wrap between lines
+opt.whichwrap:append("<,>,h,l")
+
 -- Code Folding (UFO)
-opt.foldcolumn = "1"
+opt.foldcolumn = "1" -- Fixed width to prevent UI jumping
+opt.fillchars = [[eob: ,fold: ,foldopen:,foldclose:]] -- VSCode-like icons
 opt.foldlevel = 99
 opt.foldlevelstart = 99
 opt.foldenable = true
@@ -43,7 +47,5 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
   vim.lsp.handlers.signature_help,
   { border = border }
 )
-
-
 
 

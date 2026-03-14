@@ -7,20 +7,23 @@ return {
       local navic = require("nvim-navic")
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-      local on_attach = function(client, bufnr)
-        if client.server_capabilities.documentSymbolProvider then
-          navic.attach(client, bufnr)
-        end
-      end
+      vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function(args)
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          if client and client.server_capabilities.documentSymbolProvider then
+            navic.attach(client, args.buf)
+          end
+        end,
+      })
 
-      local lspconfig = require("lspconfig")
+      vim.lsp.config("*", {
+        capabilities = capabilities,
+      })
+
       local servers = { "lua_ls", "gopls", "ts_ls", "tailwindcss", "pyright" }
 
       for _, lsp in ipairs(servers) do
-        lspconfig[lsp].setup({
-          on_attach = on_attach,
-          capabilities = capabilities,
-        })
+        vim.lsp.enable(lsp)
       end
     end,
   },

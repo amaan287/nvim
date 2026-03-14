@@ -72,7 +72,6 @@ return {
   -- Utils
   { "folke/which-key.nvim", event = "VeryLazy", init = function() vim.o.timeout = true vim.o.timeoutlen = 300 end, opts = {} },
   { "kylechui/nvim-surround", version = "*", event = "VeryLazy", opts = {} },
-  { "karb94/neoscroll.nvim", opts = { mappings = { "<C-u>", "<C-d>", "<C-f>", "<C-y>", "<C-e>", "zt", "zz", "zb" }, hide_cursor = true } },
   { "akinsho/toggleterm.nvim", version = "*", opts = { size = 15, direction = "horizontal", float_opts = { border = "rounded" } } },
   { "folke/persistence.nvim", event = "BufReadPre", opts = { options = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp" } } },
   { "mbbill/undotree", cmd = "UndotreeToggle" },

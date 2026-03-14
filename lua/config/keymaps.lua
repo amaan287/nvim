@@ -173,6 +173,60 @@ end, { silent = true, desc = "Quick Open File" })
 -- Undotree
 keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle, { desc = "Toggle Undotree" })
 
+-- Smart w: do not jump to next line if on last word
+keymap.set("n", "w", function()
+  local current_line = vim.fn.line(".")
+  local found = vim.fn.search("\\k\\+", "W", current_line)
+
+  if found == 0 then
+    return "e"
+  else
+    return "w"
+  end
+end, { expr = true })
+
+-- Smart W: same logic but for WORD
+keymap.set("n", "W", function()
+  local current_line = vim.fn.line(".")
+  local found = vim.fn.search("\\S\\+", "W", current_line)
+
+  if found == 0 then
+    return "E"
+  else
+    return "W"
+  end
+end, { expr = true })
+
+-- Smart b: do not jump to previous line if at first word
+keymap.set("n", "b", function()
+  local current_line = vim.fn.line(".")
+  local found = vim.fn.search("\\k\\+", "bW", current_line)
+
+  if found == 0 then
+    return "^"
+  else
+    return "b"
+  end
+end, { expr = true })
+
+-- Smart B: same logic but for WORD backward
+keymap.set("n", "B", function()
+  local current_line = vim.fn.line(".")
+  local found = vim.fn.search("\\S\\+", "bW", current_line)
+
+  if found == 0 then
+    return "^"
+  else
+    return "B"
+  end
+end, { expr = true })
+
+-- Ctrl + Right behaves like smart w
+keymap.set("n", "<C-Right>", "w")
+
+-- Jump to end of line
+keymap.set("n", "<leader>e", "$", { desc = "End of line" })
+
 -- Oil (File Manager)
 keymap.set("n", "-", "<cmd>Oil<CR>", { desc = "Open parent directory" })
 
@@ -235,3 +289,7 @@ keymap.set("n", "<A-F12>", function()
     vim.api.nvim_win_set_cursor(preview_win, { target_line, 0 })
   end)
 end, { silent = true, desc = "Peek Definition" })
+
+-- Disable PageUp / PageDown (no-op, no error)
+keymap.set({ "n", "i", "v" }, "<PageUp>", "<Nop>", { silent = true })
+keymap.set({ "n", "i", "v" }, "<PageDown>", "<Nop>", { silent = true })
